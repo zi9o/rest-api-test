@@ -14,7 +14,7 @@ nunjucks.configure(path.join(__dirname, "./front"), {
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, './front/build'), { maxAge: 31536000000 }));
 
-app.use('/api', require("./app/routes")(app));
+app.use('/api', require("./app/routes/routes")(app));
 
 // When on Production mode, All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {

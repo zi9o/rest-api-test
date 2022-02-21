@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r babel-register index.js",
-    "front:start": "cd front && npm run start",
+    "start:front": "cd front && npm run start",
     "dev": "nodemon",
     "start-api": "json-server --port 3001 --routes routes.json ./api.js",
     "delay-api": "json-server --port 3001 --routes routes.json ./api.js --delay 10000",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "css-loader": "^1.0.1",
     "express": "^4.16.4",
     "extract-text-webpack-plugin": "^3.0.2",
+    "jest": "^25.1.0",
     "json-server": "^0.14.0",
     "node-sass": "^4.10.0",
     "nunjucks": "^3.1.3",
@@ -37,9 +38,16 @@
     "webpack": "^3.8.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.11.5",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "@types/jest": "^25.1.4",
+    "@types/supertest": "^2.0.8",
+    "babel-jest": "^26.5.2",
     "nodemon": "^1.18.6",
+    "supertest": "^4.0.2",
     "webpack-cli": "^3.1.2"
   },
   "nodemonConfig": {

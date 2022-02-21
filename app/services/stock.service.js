@@ -1,8 +1,6 @@
-const express = require('express');
 
-const router = express.Router();
 
-router.get('/', (req, res) => {
+function generateStocks() {
     let stocks = [];
     for (let i = 0; i < 100; i++) {
         stocks.push({
@@ -11,7 +9,9 @@ router.get('/', (req, res) => {
             stocks: `${(Math.random() * 10 + 15 - (i / 100) * 15).toFixed(3)}`
         });
     }
-    res.status(200).send(stocks);
-});
+    return stocks;
+}
 
-module.exports = router;
+module.exports = {
+    generateStocks: generateStocks
+}
