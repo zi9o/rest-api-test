@@ -10,7 +10,8 @@
     "dev": "nodemon",
     "start-api": "json-server ./api.js",
     "delay-api": "json-server ./api.js --delay 10000",
-    "test": "jest"
+    "test": "jest",
+    "swagger:gen": "node swagger/swagger.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   },
   "homepage": "https://github.com/Julien-Decoen/rest-api-test#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
     "css-loader": "^1.0.1",
@@ -38,6 +40,8 @@
     "postcss-loader": "^3.0.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.23.1",
+    "swagger-autogen": "^2.18.8",
+    "swagger-ui-express": "^4.3.0",
     "webpack": "^3.8.1",
     "winston": "^3.6.0"
   },

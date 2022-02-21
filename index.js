@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 const logger = require('morgan');
 const helmet = require('helmet');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger/swagger.json');
 
 const errorParser = require('./app/middlewares/error-parser.middleware');
 const timeoutParser = require('./app/middlewares/timeout.middleware');
@@ -41,6 +43,8 @@ app.use('/api', require("./app/routes/routes")(app));
 // Parse all errors with the same format
 app.use(errorParser);
 
+// Expose API docs
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // When on Production mode, All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
