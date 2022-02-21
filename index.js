@@ -11,12 +11,16 @@ nunjucks.configure(path.join(__dirname, "./front"), {
   express: app
 });
 
-app.use(
-  express.static(path.join(__dirname, "/.public"), { maxAge: 31536000000 })
-);
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, './front/build'), { maxAge: 31536000000 }));
 
-app.use(require("./app/routes")(app));
+app.use('/api', require("./app/routes")(app));
 
-app.listen(1337, () => {
-  console.log(`Server started ➜ http://localhost:1337`);
+// When on Production mode, All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './front/build', 'index.html'));
+});
+
+app.listen(3001, () => {
+  console.log(`Server started ➜ http://localhost:3001`);
 });

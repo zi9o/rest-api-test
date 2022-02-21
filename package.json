@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node -r babel-register index.js",
+    "start": "node -r babel-register index.js",
+    "front:start": "cd front && npm run start",
     "dev": "nodemon",
-    "watch": "webpack --watch",
-    "start-api": "json-server ./api.js",
-    "delay-api": "json-server ./api.js --delay 10000",
+    "start-api": "json-server --port 3001 --routes routes.json ./api.js",
+    "delay-api": "json-server --port 3001 --routes routes.json ./api.js --delay 10000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
