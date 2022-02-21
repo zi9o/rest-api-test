@@ -33,3 +33,14 @@ describe("Test error format", () => {
     }
   });
 });
+
+describe("Detect timeouts when running delay-api", () => {
+
+  it("Should return 503", async () => {
+    const response = await request(app)
+        .get('/api/stocks')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(503);
+  });
+});

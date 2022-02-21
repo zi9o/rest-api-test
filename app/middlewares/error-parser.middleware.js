@@ -1,7 +1,7 @@
 const winston = require('../config/winston-logger');
 const {CommonErrors} = require('../_errors');
 const errorStructure = function (err) {
-  const statusCode = err.isOperational ? err.commonType : err.statusCode === 404 ? 404 : 520;
+  const statusCode = err.isOperational ? err.commonType : err.statusCode === 404 ? 404 : (err.status || 520);
   const error = {
     error: {
       statusCode,

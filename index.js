@@ -4,12 +4,16 @@ const logger = require('morgan');
 const helmet = require('helmet');
 
 const errorParser = require('./app/middlewares/error-parser.middleware');
+const timeoutParser = require('./app/middlewares/timeout.middleware');
 
 const app = express();
 
 if (process.env.NODE_ENV === 'production') {
   app.use(helmet());
 }
+
+// Handle timeout
+app.use(timeoutParser);
 
 app.use(logger('dev'));
 
@@ -31,10 +35,12 @@ if (process.env.NODE_ENV === 'development') {
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, './front/build'), { maxAge: 31536000000 }));
 
+// Inject App routes
 app.use('/api', require("./app/routes/routes")(app));
 
 // Parse all errors with the same format
 app.use(errorParser);
+
 
 // When on Production mode, All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {

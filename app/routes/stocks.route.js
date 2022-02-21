@@ -7,8 +7,10 @@ router.get('/', (req, res) => {
     const stocks = generateStocks();
     // Detect if there's a limit to apply
     // TODO > This should be managed globally
-    const limit = req.query._limit || undefined;
-    res.status(200).send(stocks.slice(0, limit));
+    const limit = req.query._limit;
+    setTimeout(()=>{
+        res.status(200).send(stocks.slice(0, limit));
+    }, 3000)
 });
 
 module.exports = router;
