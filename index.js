@@ -17,6 +17,9 @@ if (process.env.NODE_ENV === 'production') {
 // Handle timeout
 app.use(timeoutParser);
 
+// Expose API docs
+app.use('/api/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 app.use(logger('dev'));
 
 // Passing the request url to environment locals
@@ -42,9 +45,6 @@ app.use('/api', require("./app/routes/routes")(app));
 
 // Parse all errors with the same format
 app.use(errorParser);
-
-// Expose API docs
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // When on Production mode, All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
