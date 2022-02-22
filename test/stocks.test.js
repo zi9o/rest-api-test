@@ -7,6 +7,7 @@ describe("Test the stocks", () => {
     expect.objectContaining({
       timestamp: expect.any(Date),
       index: expect.any(Number),
+      name: expect.any(String),
       stocks: expect.any(String),
     }),
   ];
