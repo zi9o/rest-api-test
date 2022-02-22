@@ -7,7 +7,7 @@ const dimensions = {
     width: 800,
     height: 300,
     margin: {
-        top: 30,
+        top: 300,
         right: 30,
         bottom: 30,
         left: 60

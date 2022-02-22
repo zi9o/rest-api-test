@@ -17,7 +17,7 @@ const MultilineChart = ({ tabledata = [], data=[], dimensions = {} }) => {
             .scaleLinear()
             .domain([
                 d3.min(data, (d) => d.value) - 10,
-                d3.max(data, (d) => d.value) + 100
+                d3.max(data, (d) => d.value) + 50
             ])
             .range([height, 0]);
         // Create root container where we will append all other chart elements
