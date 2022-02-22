@@ -4,8 +4,8 @@ import "./App.css";
 import MultilineChart from "./components/MultilineChart";
 
 const dimensions = {
-    width: 600,
-    height: 600,
+    width: 800,
+    height: 300,
     margin: {
         top: 30,
         right: 30,
@@ -14,10 +14,11 @@ const dimensions = {
     }
 };
 
-function changeItem(item) {
+function changeItem(item, index = 0) {
     return {
         date: new Date(item.timestamp),
         value: item.stocks,
+        index
     }
 }
 
@@ -25,38 +26,59 @@ function changeDataStructure(list) {
     let newList = [];
     let names = new Set();
     let nameKeys = new Map();
+    let allowChanges = [];
     list.forEach((item) => {
         if (names.has(item.name)) {
-            newList[nameKeys.get(item.name)].items.push(changeItem(item));
+            const stockIndex = nameKeys.get(item.name);
+            allowChanges[stockIndex].push(true);
+            const index = newList[stockIndex].items.length;
+            newList[stockIndex].items.push(changeItem(item, index));
         } else {
-            nameKeys.set(item.name, names.size);
+            const size = names.size;
+            nameKeys.set(item.name, size);
             names.add(item.name);
+            allowChanges.push([true]);
             newList.push({
                 name: item.name,
+                index: size,
                 color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6),
-                items: [changeItem(item)]
+                items: [changeItem(item, 0)]
             })
         }
     });
-    console.log(newList);
-    return newList;
+
+    return {changedData: newList, allowChanges};
 }
 
 function App() {
-    const [data, setData] = React.useState(null);
-    const [tableData, setTableData] = React.useState(null);
+    const [data, setData] = React.useState([]);
+    const [tableData, setTableData] = React.useState([]);
     const [hasData, setHasData] = React.useState(false);
+    const [allowedToChange, setAllowedToChange] = React.useState([]);
 
-    function updateData(index, value) {
-        data[index] = {...data[index], stocks: value};
+    function toChange(stockIndex, index) {
+        allowedToChange[stockIndex][index] = false;
+        setAllowedToChange([...allowedToChange]);
+    }
+
+    function cancelChange(stockIndex, index) {
+        allowedToChange[stockIndex][index] = true;
+        setAllowedToChange([...allowedToChange]);
+    }
+
+    function updateData(stockIndex, index, value) {
+        tableData[stockIndex].items[index] = {...tableData[stockIndex].items[index], value};
+        setTableData([...tableData]);
     }
     React.useEffect(() => {
         fetch("/api/stocks")
             .then((res) => res.json())
             .then((data) => {
                 setData(data);
-                setTableData(changeDataStructure(data));
+                const {changedData, allowChanges} = changeDataStructure(data);
+                setTableData(changedData);
                 setHasData(data && data.length > 0);
+                setAllowedToChange(allowChanges)
             });
     }, []);
 
@@ -89,7 +111,7 @@ function App() {
                                 <div className="table-responsive">
                                     { hasData ? (
 
-                                        <table className="table table-bordered align-middle">
+                                        <table className="table table-bordered table-responsive align-middle">
                                             <thead>
                                             <tr>
                                                 <th className="p-0 min-w-50px"></th>
@@ -107,9 +129,22 @@ function App() {
                                                             </div>
                                                         </td>
                                                         { s && s.items.length > 0 ? s.items.map((item, j) =>
-                                                                <td key={j} className="px-1">
+                                                                allowedToChange[i] && allowedToChange[i][j] ? <td onClick={() => {toChange(s.index, j)}} key={j} className="px-1">
                                                                     {item.value}
-                                                                </td>)
+                                                                </td>
+                                                            : <td key={j} className="px-1">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control form-control-lg form-control-solid"
+                                                                    placeholder=""
+                                                                    value={item.value}
+                                                                    onBlur={() => cancelChange(s.index, j)}
+                                                                    onChange={(e) =>
+                                                                        updateData(s.index, j, e.target.value)
+                                                                    }
+                                                                />
+                                                            </td>
+                                                            )
                                                             : null }
 
                                                     </tr>
@@ -129,12 +164,8 @@ function App() {
 
                 </div>
             </section>
-
             <div className="pt-4">
-                {hasData ? <MultilineChart
-                    data={tableData}
-                    dimensions={dimensions}
-                /> : null }
+                {hasData ? <MultilineChart data={data.map((v)=>changeItem(v))} tabledata={tableData} dimensions={dimensions}/> : null }
             </div>
         </div>
     );

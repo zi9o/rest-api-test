@@ -2,7 +2,7 @@
 import React from "react";
 import * as d3 from "d3";
 
-const MultilineChart = ({ data = [], dimensions = {} }) => {
+const MultilineChart = ({ tabledata = [], data=[], dimensions = {} }) => {
     const svgRef = React.useRef(null);
     const { width, height, margin = {} } = dimensions;
     const svgWidth = width + margin.left + margin.right;
@@ -11,13 +11,13 @@ const MultilineChart = ({ data = [], dimensions = {} }) => {
     React.useEffect(() => {
         const xScale = d3
             .scaleTime()
-            .domain(d3.extent(data[0].items, (d) => d.date))
+            .domain(d3.extent(data, (d) => d.date))
             .range([0, width]);
         const yScale = d3
             .scaleLinear()
             .domain([
-                d3.min(data[0].items, (d) => d.value) - 50,
-                d3.max(data[0].items, (d) => d.value) + 50
+                d3.min(data, (d) => d.value) - 10,
+                d3.max(data, (d) => d.value) + 100
             ])
             .range([height, 0]);
         // Create root container where we will append all other chart elements
@@ -64,14 +64,14 @@ const MultilineChart = ({ data = [], dimensions = {} }) => {
 
         svg
             .selectAll(".line")
-            .data(data)
+            .data(tabledata)
             .enter()
             .append("path")
             .attr("fill", "none")
             .attr("stroke", (d) => d.color)
             .attr("stroke-width", 3)
             .attr("d", (d) => line(d.items));
-    }, [data]);
+    }, [tabledata]);
 
     return <svg ref={svgRef} width={svgWidth} height={svgHeight} />;
 };
