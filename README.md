@@ -6,6 +6,18 @@ Install packages
 npm i
 ```
 
+Start Frontend
+
+```bash
+npm run start:front
+```
+
+Build Frontend for production
+
+```bash
+npm run build:front
+```
+
 Start Api
 
 ```bash
@@ -29,18 +41,32 @@ npm run dev
 npm run start
 ```
 
+Update Api docs
+
+```bash
+# Dev
+npm run swagger:gen
+```
+
+Run Unit/integration tests
+
+```bash
+# Dev
+npm run test
+```
+
 ## Api Routes
 
 To load the last 20 stock value samples :
 
 ```console
-$> curl http://localhost:3000/stocks?_limit=20
+$> curl http://localhost:3001/stocks?_limit=20
 ```
 
 To load all available stock value samples :
 
 ```console
-$> curl http://localhost:3000/stocks
+$> curl http://localhost:3001/stocks
 ```
 
 More exemple : [here](https://github.com/typicode/json-server#routes)
