@@ -1,21 +1,15 @@
+## Retrieve repository
+
+```sh
+git clone git@github.com:zi9o/rest-api-test.git && cd rest-api-test
+```
+
 ## Getting started
 
 Install packages
 
 ```
-npm i
-```
-
-Start Frontend
-
-```bash
-npm run start:front
-```
-
-Build Frontend for production
-
-```bash
-npm run build:front
+yarn && cd front && mpn i
 ```
 
 Start Api
@@ -28,6 +22,18 @@ Start Api which response with delay (10s)
 
 ```bash
 npm run delay-api
+```
+
+Start Frontend
+
+```bash
+npm run start:front
+```
+
+Build Frontend for production
+
+```bash
+npm run build:front
 ```
 
 Start Server
